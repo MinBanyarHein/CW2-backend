@@ -5,7 +5,8 @@ import morgan from 'morgan';
 import { ObjectId } from 'mongodb';
 
 const app = express();
-app.listen(3000);
+const port = process.env.PORT || 3000;
+app.listen(port);
 
 app.use(cors());
 app.use(express.json());
