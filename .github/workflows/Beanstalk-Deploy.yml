@@ -19,8 +19,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: cw2
-          environment_name: Cw2-env
+          application_name: cst3145
+          environment_name: Cst3145-env
           version_label: 12345
           region: eu-west-2
           deployment_package: deploy.zip
