@@ -21,4 +21,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: cst3145
           environment_name: Cst3145-env
+          version_label: []
           region: eu-west-2
