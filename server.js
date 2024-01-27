@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { connectDB } from './connectdb.js';
 import morgan from 'morgan';
+import { ObjectId } from 'mongodb';
 
 const app = express();
 app.listen(3000);
@@ -52,5 +53,61 @@ app.get('/search', (req, res) => {
         res.status(500).json({ error: err.message });
     });
 });
+
+app.post('/order', (req, res) => {
+    const order = req.body;
+
+
+    connectDB().then(db => {
+        db.collection('order_collection').insertOne(order)  //insert the order into the database
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+    }).catch(err => {
+        res.status(500).json({ error: err.message });
+    });
+});
+
+app.get('/order', (req, res) => {
+    connectDB().then(db => {
+        db.collection('order_collection').find().toArray()
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
+    }).catch(err => {
+        res.status(500).json({ error: err.message });
+    });
+})
+
+app.put('/updateAvailability', (req, res) => {
+    const lessonsToUpdate = req.body;
+    console.log("Received lessons to update:", lessonsToUpdate);
+
+    connectDB().then(db => {
+        return Promise.all(
+            lessonsToUpdate.map(lesson => {
+            console.log("Updating lesson with _id:", lesson._id);
+            return db.collection('lesson_data').updateOne(
+                { _id: new ObjectId(lesson._id) },
+                { $inc: { avail: 0-lesson.availDelta } }
+            );
+        }));
+    })
+    .then(updateResults => {
+        console.log("Update results:", updateResults);
+        res.json({ updateResults: updateResults });
+    })
+    .catch(err => {
+        console.error("Error updating lessons:", err);
+        res.status(500).json({ error: err.message });
+    });
+});
+
 
 
