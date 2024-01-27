@@ -59,7 +59,7 @@ app.post('/order', (req, res) => {
 
 
     connectDB().then(db => {
-        db.collection('order_collection').insertOne(order)  //insert the order into the database
+        db.collection('order_collection').insertOne(order)
         .then(result => {
             res.json(result);
         })
