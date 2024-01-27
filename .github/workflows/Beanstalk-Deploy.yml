@@ -23,3 +23,4 @@ jobs:
           environment_name: Cst3145-env
           version_label: ${{ github.run_number }}
           region: eu-west-2
+          deployment_package: deploy.zip
