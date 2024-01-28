@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 export async function connectDB() {
   try {
-    const client = await MongoClient.connect("mongodb+srv://hmin1867:g3UcfIxUVle9uVLt@cluster0.qzptoj5.mongodb.net/?retryWrites=true&w=majority");
+    const client = await MongoClient.connect("mongodb+srv://minmin:t4YETX8ZSX8uzTaj@cluster0.ok2f5fy.mongodb.net/?retryWrites=true&w=majority");
     await client.connect();
     const db = client.db("Lesson");
     // const collection = db.collection("myFirstCollection");

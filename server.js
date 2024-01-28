@@ -34,7 +34,7 @@ app.get('/search', (req, res) => {
         let searchQuery = {};
 
         if (queryParam) {
-            // Use the 'query' parameter to search across multiple fields
+            // To search across multiple fields
             searchQuery.$or = [
                 { name: { $regex: new RegExp(queryParam, 'i') } },
                 { city: { $regex: new RegExp(queryParam, 'i') } },
