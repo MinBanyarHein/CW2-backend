@@ -11,9 +11,6 @@ export async function connectDB() {
     console.log(err);
     throw new Error("Unable to Connect to Database");
 }
-finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  } 
+
 
 }
