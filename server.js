@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { connectDB } from './connectdb.js';
+import { connectDB ,closeDB} from './connectdb.js';
 import morgan from 'morgan';
 import { ObjectId } from 'mongodb';
 
@@ -13,7 +13,8 @@ app.use(express.json());
 app.use(morgan('common')); //middleware that handle logging requests from the front end (fist one)
 app.use(express.static('public')); //middleware that handle static files (second one)
 
-app.get('/lessons', (req, res) => {//api endpoint to get all lessons
+app.get('/lessons', 
+(req, res) => {//api endpoint to get all lessons
     connectDB().then(db => {
         db.collection('lesson_data').find().toArray()
         .then(result => {
@@ -25,7 +26,7 @@ app.get('/lessons', (req, res) => {//api endpoint to get all lessons
     }).catch(err => {
         res.status(500).json({ error: err.message }); // catch the database errors
     });
-});
+}, closeDB);
 
 app.get('/search', (req, res) => {
     const queryParam = req.query.query; // Get the 'query' parameter from the request
@@ -37,9 +38,7 @@ app.get('/search', (req, res) => {
             // To search across multiple fields
             searchQuery.$or = [
                 { name: { $regex: new RegExp(queryParam, 'i') } },
-                { city: { $regex: new RegExp(queryParam, 'i') } },
-                { price: { $regex: new RegExp(queryParam, 'i') } },
-                { avail: { $regex: new RegExp(queryParam, 'i') } }
+                { city: { $regex: new RegExp(queryParam, 'i') } }
             ];
         }
 
@@ -53,7 +52,7 @@ app.get('/search', (req, res) => {
     }).catch(err => {
         res.status(500).json({ error: err.message });
     });
-});
+}, closeDB);
 
 app.post('/order', (req, res) => {
     const order = req.body;
@@ -69,8 +68,8 @@ app.post('/order', (req, res) => {
         });
     }).catch(err => {
         res.status(500).json({ error: err.message });
-    });
-});
+    })
+}, closeDB);
 
 app.get('/order', (req, res) => {
     connectDB().then(db => {
@@ -83,8 +82,8 @@ app.get('/order', (req, res) => {
         });
     }).catch(err => {
         res.status(500).json({ error: err.message });
-    });
-})
+    })
+},closeDB);
 
 app.put('/updateAvailability', (req, res) => {
     const lessonsToUpdate = req.body;
@@ -107,8 +106,8 @@ app.put('/updateAvailability', (req, res) => {
     .catch(err => {
         console.error("Error updating lessons:", err);
         res.status(500).json({ error: err.message });
-    });
-});
+    })
+},closeDB);
 
 
 
